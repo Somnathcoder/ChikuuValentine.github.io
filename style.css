@@ -10,7 +10,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+
+  background: url("img/IMG_0998.JPG.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   overflow: hidden;
 }
 
