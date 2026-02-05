@@ -1,55 +1,74 @@
-/* Typing Animation */
-const text = "Will you be my Valentine?";
-let index = 0;
-const typingEl = document.getElementById("typingText");
+document.addEventListener("DOMContentLoaded", () => {
+  try {
+    const typingText = document.getElementById("typingText");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const container = document.querySelector(".container");
 
-function typeText() {
-  if (index < text.length) {
-    typingEl.textContent += text.charAt(index);
-    index++;
-    setTimeout(typeText, 80);
-  }
-}
-typeText();
+    // Safety check
+    if (!typingText || !yesBtn || !noBtn || !container) {
+      console.error("Required elements not found!");
+      return;
+    }
 
-/* Yes Button Growing */
-const yesBtn = document.getElementById("yesBtn");
-let scale = 1;
+    // Typing effect
+    const text = "Hey Chikuu ❤️";
+    let i = 0;
 
-yesBtn.addEventListener("click", () => {
-  scale += 0.15;
-  yesBtn.style.transform = `scale(${scale})`;
+    function typeEffect() {
+      if (i < text.length) {
+        typingText.textContent += text.charAt(i);
+        i++;
+        setTimeout(typeEffect, 80);
+      }
+    }
+    typeEffect();
 
-  if (scale > 1.8) {
-    document.querySelector(".container").innerHTML = `
-      <h1>YAYYYY!! 💘🥹</h1>
-      <p>You just made me the happiest person ever ❤️</p>
-    `;
+    // Floating Hearts Function
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+
+      // random position
+      heart.style.left = Math.random() * 100 + "vw";
+
+      // random size
+      const size = Math.random() * 40 + 40;
+      heart.style.width = size + "px";
+      heart.style.height = size + "px";
+
+      // random duration
+      heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 7000);
+    }
+
+    // create hearts every 400ms
+    const heartInterval = setInterval(createHeart, 400);
+
+    // NO button runaway
+    noBtn.addEventListener("mouseenter", () => {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
+      noBtn.style.position = "absolute";
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    });
+
+    // YES button redirect
+    yesBtn.addEventListener("click", () => {
+      clearInterval(heartInterval); // stop hearts
+      window.location.href = "lovepage.html"; // next screen
+    });
+
+  } catch (err) {
+    console.error("Error in script.js:", err);
   }
 });
 
-/* No Button Dodge */
-const noBtn = document.getElementById("noBtn");
 
-noBtn.addEventListener("mouseenter", moveNoBtn);
-noBtn.addEventListener("click", moveNoBtn);
-
-function moveNoBtn() {
-  const x = Math.random() * 200 - 100;
-  const y = Math.random() * 200 - 100;
-  noBtn.style.transform = `translate(${x}px, ${y}px)`;
-}
-
-/* Floating Hearts */
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerHTML = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = Math.random() * 3 + 4 + "s";
-  document.body.appendChild(heart);
-
-  setTimeout(() => heart.remove(), 6000);
-}
-
-setInterval(createHeart, 350);
